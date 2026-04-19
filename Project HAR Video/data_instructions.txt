@@ -1,0 +1,76 @@
+# Drive Repository: HAR Model Assets and Demo Data
+
+**Access link:**  
+[https://drive.google.com/drive/folders/1b3sNk8lUll-_4QntLKzqIt2fYnLl-haw?usp=drive_link](https://drive.google.com/drive/folders/1b3sNk8lUll-_4QntLKzqIt2fYnLl-haw?usp=drive_link)
+
+This repository contains the necessary materials to evaluate, test, and extend the Human Activity Recognition (HAR) system based on the VJEPA2.1 architecture and a Temporal Transformer alternative. The content is organized into three main directories, described below.
+
+---
+
+## Directory: `data_demo`
+
+**Purpose:**  
+Provide a minimal, lightweight dataset for rapid prototyping and code validation.
+
+**Contents:**
+- A reduced set of video clips belonging to a subset of the original activity classes.
+- Fewer samples per class compared to the full HAR dataset.
+- The folder structure follows the convention expected by the training and inference scripts (i.e., one subdirectory per class).
+
+**Usage:**
+- Update the `data_root` path in the training or inference notebooks to point to this directory.
+- Useful for quickly testing code changes, verifying data loading pipelines, or running demo inferences without requiring large storage or long processing times.
+
+**Limitations:**
+- Because of the small size, models trained or evaluated on this set will not reflect real-world performance. It is intended only for functional verification.
+
+---
+
+## Directory: `vjepa`
+
+**Purpose:**  
+Contains the primary implementation of the VJEPA2.1 video model and associated outputs.
+
+**Contents:**
+- **`HAR_dl.ipynb`**  
+  The main Jupyter notebook with the complete pipeline: data loading, model definition (VJEPA2.1Encoder + classifier head), training loop, evaluation, and inference.
+
+- **`best.pth`**  
+  The saved state dictionary of the best VJEPA2.1 model obtained during training. This file can be directly loaded for inference or fine-tuning.
+
+- **`predictions.csv`**  
+  A CSV file containing the model predictions on the original (full) dataset. Each row typically includes the video file identifier, ground truth label, predicted label, and confidence scores.
+
+**Note on Embeddings:**  
+The `vjepa` directory does **not** include precomputed feature vectors (embeddings) from the full dataset. The embeddings were not saved during the original training runs.
+
+---
+
+## Directory: `Temporal Transformer`
+
+**Purpose:**  
+Alternative model architecture based on a Temporal Transformer for video classification. This serves as a baseline or comparative approach to the VJEPA model.
+
+**Contents:**
+- Training/evaluation for the Temporal Transformer model.
+- Precomputed feature vectors extracted from video clips using resnet18.
+
+**Performance Remarks:**  
+- The current checkpoint represents a training state where validation accuracy is high (close to 100%), while test accuracy stabilizes around 85%.  
+- **Important:** This discrepancy indicates that the model has begun to memorize the training distribution rather than learning generalizable patterns. Continuing training for additional epochs would likely increase test accuracy further (potentially near 100%), but such improvement would be driven by overfitting rather than genuine generalization.  
+- The provided checkpoint is therefore a compromise: it avoids extreme overfitting while still offering reasonable performance. It is not intended as a production-ready model but rather as a tool for analyzing feature representations and comparing architectural choices.
+
+---
+
+## Summary and Recommendations
+
+| Directory              | Best use case                                                                 |
+|------------------------|-------------------------------------------------------------------------------|
+| `data_demo`            | Quick code testing and pipeline validation.                                    |
+| `vjepa`                | Main model deployment, inference, or further fine-tuning with the full dataset.|
+| `Temporal Transformer` | Experimentation with feature vectors and study of overfitting behavior.        |
+
+
+---
+
+*Access to this repository is restricted to authorized CICESE personnel. Please do not redistribute the contents without permission.*
